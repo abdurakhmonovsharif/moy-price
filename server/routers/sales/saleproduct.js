@@ -17,6 +17,8 @@ const { ProductData } = require("../../models/Products/Productdata");
 const { Category } = require("../../models/Products/Category");
 const { DailySaleConnector } = require("../../models/Sales/DailySaleConnector");
 const ObjectId = require("mongodb").ObjectId;
+const axios = require("axios")
+const moment = require("moment")
 const { filter } = require("lodash");
 const {
   WarhouseProduct,
@@ -250,7 +252,7 @@ module.exports.register = async (req, res) => {
         totalprice: convertToUsd(totalprice),
         totalpriceuzs: convertToUzs(totalpriceuzs),
         market,
-        pay_end_date:debt.pay_end_date,
+        pay_end_date: debt.pay_end_date,
         user,
         saleconnector: saleconnector._id,
         products,
@@ -258,6 +260,11 @@ module.exports.register = async (req, res) => {
       await newDebt.save();
       saleconnector.debts.push(newDebt._id);
       dailysaleconnector.debt = newDebt._id;
+      const findedMarket = await Market.findById(market)
+      if (!findedMarket) {
+        res.status(400).json({ message: "Market not found!" })
+      }
+      await sendMessageToClientAboutHisDebt(client, debt.debtuzs, debt.pay_end_date, use.phone, findedMarket)
     }
 
     if (payment.totalprice > 0) {
@@ -300,7 +307,7 @@ module.exports.register = async (req, res) => {
           market,
           name: client.name,
           packman,
-          phoneNumber:client.phoneNumber
+          phoneNumber: client.phoneNumber
         });
         await newClient.save();
         if (packman) {
@@ -480,6 +487,10 @@ module.exports.addproducts = async (req, res) => {
         unitpriceuzs,
         pieces,
         product,
+        length,
+        size,
+        piece,
+        columns,
       } = saleproduct;
       const { error } = validateSaleProduct({
         totalprice,
@@ -488,6 +499,12 @@ module.exports.addproducts = async (req, res) => {
         unitpriceuzs,
         pieces,
         product: product._id,
+        more_parameters1: {
+          length,
+          size,
+          piece,
+        },
+        more_parameters2: columns,
       });
 
       const produc = await Product.findById(product._id)
@@ -517,6 +534,12 @@ module.exports.addproducts = async (req, res) => {
         user,
         previous: produc.total,
         next: produc.total - Number(pieces),
+        more_parameters1: {
+          length,
+          size,
+          piece,
+        },
+        more_parameters2: columns,
       });
 
       all.push(newSaleProduct);
@@ -582,10 +605,17 @@ module.exports.addproducts = async (req, res) => {
         user,
         saleconnector: saleconnector._id,
         products,
+        pay_end_date: debt.pay_end_date
       });
       await newDebt.save();
+
       saleconnector.debts.push(newDebt._id);
       dailysaleconnector.debt = newDebt._id;
+      const findedMarket = await Market.findById(market)
+      if (!findedMarket) {
+        res.status(400).json({ message: "Market not found!" })
+      }
+      await sendMessageToClientAboutHisDebt(client, debt.debtuzs, debt.pay_end_date, use.phone, findedMarket)
     }
 
     if (payment.totalprice > 0) {
@@ -652,7 +682,7 @@ module.exports.addproducts = async (req, res) => {
       .select("-isArchive -updatedAt -market -__v")
       .populate({
         path: "products",
-        select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces",
+        select: "totalprice unitprice totalpriceuzs unitpriceuzs pieces more_parameters1 more_parameters2",
         options: { sort: { created_at: -1 } },
         populate: {
           path: "product",
@@ -674,6 +704,35 @@ module.exports.addproducts = async (req, res) => {
       .json({ error: "Serverda xatolik yuz berdi...", message: error.message });
   }
 };
+const sendMessageToClientAboutHisDebt = async (client, debtUzs, debtDate, userPhone, market) => {
+  try {
+    console.log('Messaging has started!');
+    const formatMessage = (
+      name,
+      debt,
+      pay_end_date,
+      market_number,
+      market_name,
+    ) => {
+      return `Хурматли ${name} сиз ${market_name} дан ${debt} uzs микдорида карзингиз мавжуд. ${pay_end_date} гача туловни амалга оширинг. Мурожаат учун ${market_number}`;
+    }
+    const debtEndDate = moment(debtDate);
+    const response = await axios.get(
+      `https://smsapp.uz/new/services/send.php?key=${market.SMS_API_KEY}&number=${client.phoneNumber}&message=${formatMessage(
+        client.name,
+        debtUzs,
+        debtEndDate.format('MM/DD/YYYY'),
+        userPhone,
+        market.name,
+      )}`
+    );
+    console.log(response.data);
+    console.log('Messaging has ended!');
+  } catch (error) {
+    console.log(error);
+    throw new Error(error)
+  }
+}
 
 module.exports.check = async (req, res) => {
   try {
@@ -1282,16 +1341,16 @@ module.exports.getreportproducts = async (req, res) => {
         filter(saleproducts, (saleproduct) =>
           search.nameofclient.length > 0
             ? saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null &&
-              saleproduct.saleconnector &&
-              saleproduct.saleconnector.client &&
-              saleproduct.saleconnector.client !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null &&
+            saleproduct.saleconnector &&
+            saleproduct.saleconnector.client &&
+            saleproduct.saleconnector.client !== null
             : saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null
         )
       );
 
@@ -1333,16 +1392,16 @@ module.exports.getreportproducts = async (req, res) => {
         filter(saleproducts, (saleproduct) =>
           search.nameofclient.length > 0
             ? saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null &&
-              saleproduct.saleconnector &&
-              saleproduct.saleconnector.client &&
-              saleproduct.saleconnector.client !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null &&
+            saleproduct.saleconnector &&
+            saleproduct.saleconnector.client &&
+            saleproduct.saleconnector.client !== null
             : saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null
         )
       );
 
@@ -1422,16 +1481,16 @@ module.exports.getexcelreportproducts = async (req, res) => {
         filter(saleproducts, (saleproduct) =>
           search.nameofclient.length > 0
             ? saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null &&
-              saleproduct.saleconnector &&
-              saleproduct.saleconnector.client &&
-              saleproduct.saleconnector.client !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null &&
+            saleproduct.saleconnector &&
+            saleproduct.saleconnector.client &&
+            saleproduct.saleconnector.client !== null
             : saleproduct.product.productdata &&
-              saleproduct.product.productdata !== null &&
-              saleproduct.user &&
-              saleproduct.user !== null
+            saleproduct.product.productdata !== null &&
+            saleproduct.user &&
+            saleproduct.user !== null
         )
       );
 

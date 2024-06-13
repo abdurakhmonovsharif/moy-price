@@ -145,7 +145,7 @@ const ClientsSales = () => {
             setModalVisible(!modalVisible)
         } else {
             setModalBody('allSaleDebtPayments')
-            setModalData(saleconnector[0])
+            setModalData(saleconnector[saleconnector.length-1])
             setModalVisible(!modalVisible)
         }
     }
@@ -470,7 +470,6 @@ const ClientsSales = () => {
         }
         dispatch(payClientSalesDebt(body)).then(({payload}) => {
             setModalData(payload)
-            console.log(payload);
             setTimeout(() => {
                 setModalBody('checkPayment')
                 setModalVisible(true)

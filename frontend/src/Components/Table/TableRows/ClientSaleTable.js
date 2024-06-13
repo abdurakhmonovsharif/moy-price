@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import TableBtn from '../../Buttons/TableBtn'
-import {map, uniqueId} from 'lodash'
-import {t} from 'i18next'
+import { map, uniqueId } from 'lodash'
+import { t } from 'i18next'
 
 export const ClientSaleTable = ({
     data,
@@ -47,12 +47,12 @@ export const ClientSaleTable = ({
                         sum +
                         Number(
                             payment[
-                                currency === 'USD' ? 'payment' : 'paymentuzs'
+                            currency === 'USD' ? 'payment' : 'paymentuzs'
                             ]
                         )
                     )
                 }, 0)
-            })[0]
+            })[data.length - 1]
         )
         setTotalDiscount(
             data?.reduce((sum, el) => {
@@ -61,9 +61,9 @@ export const ClientSaleTable = ({
                     Number(
                         (el?.discount &&
                             el?.discount[
-                                currency === 'USD' ? 'discount' : 'discountuzs'
+                            currency === 'USD' ? 'discount' : 'discountuzs'
                             ]) ||
-                            0
+                        0
                     )
                 )
             }, 0)
@@ -75,9 +75,9 @@ export const ClientSaleTable = ({
                     Number(
                         (el?.debt &&
                             el?.debt[
-                                currency === 'USD' ? 'debt' : 'debtuzs'
+                            currency === 'USD' ? 'debt' : 'debtuzs'
                             ]) ||
-                            0
+                        0
                     )
                 )
             }, 0)
@@ -86,7 +86,14 @@ export const ClientSaleTable = ({
     useEffect(() => {
         calcTotalPayments()
     }, [data, currency])
-
+    const parseToIntOrFloat = (value) => {
+        if (!value || value === 0)  return null
+        else if (value % 1 === 0) {
+            return parseInt(value)
+        } else {
+            return Number(parseFloat(value).toFixed(2));
+        }
+    }
     return (
         <>
             {map(data, (saleconnector, index) => {
@@ -125,19 +132,19 @@ export const ClientSaleTable = ({
                         </td>
                         <td className='text-warning-500 text-left td'>
                             {currency === 'UZS'
-                                ? saleconnector?.discount?.discountuzs
-                                : saleconnector?.discount?.discount}{' '}
+                                ? parseToIntOrFloat(saleconnector?.discount?.discountuzs)
+                                : parseToIntOrFloat(saleconnector?.discount?.discount)}{' '}
                             {currency}
                         </td>
                         <td className='text-error-500 text-left td'>
                             {(currency === 'UZS' &&
                                 saleconnector?.debt?.debtuzs !== 0) ||
-                            (currency !== 'UZS' &&
-                                saleconnector?.debt?.debt !== 0) ? (
+                                (currency !== 'UZS' &&
+                                    saleconnector?.debt?.debt !== 0) ? (
                                 <>
                                     {currency === 'UZS'
-                                        ? saleconnector?.debt?.debtuzs
-                                        : saleconnector?.debt?.debt}{' '}
+                                        ? parseToIntOrFloat(saleconnector?.debt?.debtuzs)
+                                        : parseToIntOrFloat(saleconnector?.debt?.debt)}{' '}
                                 </>
                             ) : null}
                             {currency}
@@ -155,16 +162,16 @@ export const ClientSaleTable = ({
                                             if (productId === product) {
                                                 totalSum +=
                                                     payment[
-                                                        currency === 'USD'
-                                                            ? 'payment'
-                                                            : 'paymentuzs'
+                                                    currency === 'USD'
+                                                        ? 'payment'
+                                                        : 'paymentuzs'
                                                     ]
                                             }
                                         })
                                 )}
                                 <li className='flex justify-between'>
                                     <span>
-                                        {totalSum > 0 ? '+ ' + totalSum : null}{' '}
+                                        {totalSum > 0 ? '+ ' + parseToIntOrFloat(totalSum) : null}{' '}
                                         {currency}
                                     </span>
                                     {totalSum > 0 ? (
@@ -192,7 +199,7 @@ export const ClientSaleTable = ({
                                     }
                                 />
                                 {saleconnector?.debt?.debtuzs ||
-                                saleconnector?.debt?.debt ? (
+                                    saleconnector?.debt?.debt ? (
                                     <TableBtn
                                         type={'pay'}
                                         bgcolor={'bg-success-500'}
@@ -239,18 +246,18 @@ export const ClientSaleTable = ({
                             <p className='text-warning-500'>
                                 {t('Chegirma')}
                                 {`: `}
-                                {currency === 'UZS'
+                                {parseToIntOrFloat(currency === 'UZS'
                                     ? saleconnector?.discount?.discountuzs
-                                    : saleconnector?.discount?.discount}{' '}
+                                    : saleconnector?.discount?.discount)}{' '}
                                 {currency}
                             </p>
                         </li>
                         <li className=' p-[10px] text-[blue] text-sm flex items-center justify-between '>
                             <p className='text-[red]'>
                                 {t('Qarz')}{' '}
-                                {currency === 'UZS'
+                                {parseToIntOrFloat(currency === 'UZS'
                                     ? saleconnector?.debt?.debtuzs
-                                    : saleconnector?.debt?.debt}{' '}
+                                    : saleconnector?.debt?.debt)}{' '}
                                 {currency}
                             </p>
                             <p></p>
@@ -264,16 +271,16 @@ export const ClientSaleTable = ({
                 <td className='text-left'></td>
                 <td className='text-left'></td>
                 <td className='text-left td border text-warning-500 border-left'>
-                    {totalDiscount > 0 ? totalDiscount : null} {currency}
+                    {totalDiscount > 0 ? parseToIntOrFloat(totalDiscount) : null} {currency}
                 </td>
                 <td className='text-left td text-[red]'>
-                    {totalDebt > 0 ? totalDebt : null} {currency}
+                    {totalDebt > 0 ? parseToIntOrFloat(totalDebt) : null} {currency}
                 </td>
                 <td className='text-left td text-success-500'>
                     <p className='py-2 pl-0 flex justify-between items-center'>
-                        {totalDebtPayment > 0 ? '+ ' + totalDebtPayment : null}{' '}
+                        {totalDebtPayment > 0 ? '+ ' + parseToIntOrFloat(totalDebtPayment) : null}{' '}
                         {currency}
-                       {totalDebtPayment>0&& <TableBtn
+                        {totalDebtPayment > 0 && <TableBtn
                             type={'print'}
                             bgcolor={'bg-primary-800'}
                             onClick={() => Print(data, 'allSaleDebtPayments')}

@@ -214,6 +214,7 @@ const RegisterSelling = () => {
         setPaymentDiscountUzs('')
         setPaymentDiscountPercent('')
         setPaymentDebt(0)
+        setShowPayEndDate(false)
         setPaymentDebtUzs(0)
         setDiscountSelectOption({ label: '%', value: '%' })
     }
@@ -885,6 +886,7 @@ const RegisterSelling = () => {
             saleconnectorid: saleConnectorId,
             comment: saleComment,
         }
+
         dispatch(returnSaleProducts(body)).then(({ payload, error }) => {
             if (!error) {
                 setModalData(payload)
@@ -1217,7 +1219,7 @@ const RegisterSelling = () => {
     const handleChangeProductNumberTable = (id, value) => {
         // Validate input using regex (allowing decimal and integer numbers)
         const validNumberRegex = /^[0-9]+(\.[0-9]*)?$/;
-        if (validNumberRegex.test(value)) {
+        if (validNumberRegex.test(value)||value==="") {
             const parsedValue = (value);
             const newRelease = map(tableProducts, (prevProduct) =>
                 prevProduct.product._id === id
@@ -1785,28 +1787,33 @@ const RegisterSelling = () => {
     }
     const handlePieceInputsChange = (value, key) => {
         const validNumberRegex = /^[0-9]+(\.[0-9]*)?$/;
-        if (validNumberRegex.test(value) && value !== ""&&value !== "Infinity") {
+        if (validNumberRegex.test(value) || value === "" ) {
             // Update the product with the raw value first
+            console.log(value);
             const updatedProduct = { ...isClickedProduct, [key]: value }
             if (key === 'size') {
                 const sizeValue = value
                 updatedProduct.size = sizeValue
-                updatedProduct.piece = parseFloat((
-                    sizeValue !== 0 ? updatedProduct.width / sizeValue : 0
-                ))
+                if(value!==""){
+                    updatedProduct.piece = parseFloat((
+                      updatedProduct.width / sizeValue 
+                    ).toFixed(2))
+                }
             } else if (key === 'piece') {
                 const pieceValue = value
                 updatedProduct.piece = pieceValue
-                updatedProduct.size = parseFloat((
-                    pieceValue !== 0 ? updatedProduct.width / pieceValue : 0
-                ))
+                if(value!==""){
+                    updatedProduct.size = parseFloat((
+                        updatedProduct.width / pieceValue 
+                    ).toFixed(2))
+                }
             } else if (key === 'length') {
                 const lengthValue = value;
                 updatedProduct.length = lengthValue;
-                let pieces = lengthValue !== 0 && updatedProduct.piece !== 0
-                    ? lengthValue / updatedProduct.piece
-                    : 0;
-                updatedProduct.pieces = parseFloat(pieces);
+                if(value!==""){
+                 let pieces =   lengthValue / updatedProduct.piece
+                updatedProduct.pieces = parseFloat(pieces.toFixed(2));
+                }
             }
 
 
@@ -2009,9 +2016,9 @@ const RegisterSelling = () => {
                                             1
                                         }
                                         className={`${isClickedProduct?.columns.length ===
-                                                1
-                                                ? 'text-error-300'
-                                                : 'text-error-500'
+                                            1
+                                            ? 'text-error-300'
+                                            : 'text-error-500'
                                             } border w-9 h-9 rounded-full flex justify-center items-center`}
                                     >
                                         <FaTrash />

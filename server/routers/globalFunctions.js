@@ -5,7 +5,7 @@ const { Debt } = require("../models/Sales/Debt");
 const { Market } = require("../models/MarketAndBranch/Market");
 const { Client } = require("../models/Sales/Client");
 const { User } = require("../models/Users");
-const axios= require("axios")
+const axios = require("axios")
 const { Category, ProductData, Unit, Product, ProductPrice } =
   require("./constants").models;
 
@@ -93,7 +93,6 @@ const createProductPrice = ({
 
 const sendMessage = async () => {
   console.log('Messaging has started!');
-
   const formatMessage = (
     name,
     debt,
@@ -119,9 +118,8 @@ const sendMessage = async () => {
         if (debt) {
           const debtEndDate = moment(debt.pay_end_date);
           const daysUntilPayment = debtEndDate.diff(now, 'days');
-          console.log(daysUntilPayment);
           const isOverdue = daysUntilPayment < 0;
-     
+
           if (debt.debt > 0 && debt.debtuzs && (isOverdue || (daysUntilPayment >= 0 && daysUntilPayment <= 3))) {
             const market = await Market.findById(el.market);
             const client = await Client.findById(el.client);

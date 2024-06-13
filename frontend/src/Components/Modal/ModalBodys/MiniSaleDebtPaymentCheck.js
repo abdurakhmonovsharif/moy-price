@@ -1,19 +1,19 @@
-import {t} from 'i18next'
-import {map} from 'lodash'
-import React, {useEffect, useState, useRef} from 'react'
-import {useSelector} from 'react-redux'
-import ReactToPrint, {useReactToPrint} from 'react-to-print'
+import { t } from 'i18next'
+import { map } from 'lodash'
+import React, { useEffect, useState, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import ReactToPrint, { useReactToPrint } from 'react-to-print'
 import TableBtn from '../../Buttons/TableBtn'
 import SmallLoader from '../../Spinner/SmallLoader'
-import {IoPrint} from 'react-icons/io5'
+import { IoPrint } from 'react-icons/io5'
 import PrintBtn from '../../Buttons/PrintBtn'
 
-const MiniSaleDebtPaymentCheck = ({data, type}) => {
+const MiniSaleDebtPaymentCheck = ({ data, type }) => {
     const [totalCard, setTotalCard] = useState(0)
     const [totalCash, setTotalCash] = useState(0)
     const [totalTransfer, setTotalTransfer] = useState(0)
-    const {user, market} = useSelector((state) => state.login)
-    const {currencyType} = useSelector((state) => state.currency)
+    const { user, market } = useSelector((state) => state.login)
+    const { currencyType } = useSelector((state) => state.currency)
     const componentRef = useRef()
     const [loadContent, setLoadContent] = useState(false)
     const onBeforeGetContentResolve = useRef(null)
@@ -38,13 +38,6 @@ const MiniSaleDebtPaymentCheck = ({data, type}) => {
         return componentRef.current
     }, [componentRef.current])
 
-    const print = useReactToPrint({
-        content: reactToPrintContent,
-        documentTitle: 'Mini Sale Debt Payment Check',
-        onBeforeGetContent: handleOnBeforeGetContent,
-        removeAfterPrint: true,
-    })
-
     useEffect(() => {
         if (
             loadContent &&
@@ -58,125 +51,161 @@ const MiniSaleDebtPaymentCheck = ({data, type}) => {
         setTotalCard(
             type === 'all'
                 ? (data?.saleconnector || data)?.payments?.reduce((prev, el) => {
-                      return (
-                          prev + el[currencyType === 'USD' ? 'card' : 'carduzs']
-                      )
-                  }, 0)
+                    return (
+                        prev + el[currencyType === 'USD' ? 'card' : 'carduzs']
+                    )
+                }, 0)
                 : type === 'debtPayed'
-                ? data[
+                    ? data[
                     currencyType === 'USD'
                         ? 'card'
                         : 'carduzs'
-                ]
-                : (data?.saleconnector || data)?.payments?.reduce(
-                      (prev, payment) => {
-                          return (
-                              prev +
-                              payment.products?.reduce((sum, productId) => {
-                                  const product = data.products.find(
-                                      (p) => p._id === productId
-                                  )
-                                  if (product) {
-                                      return (
-                                          sum +
-                                          payment[
-                                              currencyType === 'USD'
-                                                  ? 'card'
-                                                  : 'carduzs'
-                                          ]
-                                      )
-                                  }
-                                  return sum
-                              }, 0)
-                          )
-                      },
-                      0
-                  )
+                    ]
+                    : (data?.saleconnector || data)?.payments?.reduce(
+                        (prev, payment) => {
+                            return (
+                                prev +
+                                payment.products?.reduce((sum, productId) => {
+                                    const product = data.products.find(
+                                        (p) => p._id === productId
+                                    )
+                                    if (product) {
+                                        return (
+                                            sum +
+                                            payment[
+                                            currencyType === 'USD'
+                                                ? 'card'
+                                                : 'carduzs'
+                                            ]
+                                        )
+                                    }
+                                    return sum
+                                }, 0)
+                            )
+                        },
+                        0
+                    )
         )
         setTotalCash(
             type === 'all'
                 ? (data?.saleconnector || data)?.payments?.reduce((prev, el) => {
-                      return (
-                          prev + el[currencyType === 'USD' ? 'cash' : 'cashuzs']
-                      )
-                  }, 0)
+                    return (
+                        prev + el[currencyType === 'USD' ? 'cash' : 'cashuzs']
+                    )
+                }, 0)
                 : type === 'debtPayed'
-                ? data[
+                    ? data[
                     currencyType === 'USD'
                         ? 'cash'
                         : 'cashuzs'
-                ]
-                : (data?.saleconnector || data)?.payments?.reduce(
-                      (prev, payment) => {
-                          return (
-                              prev +
-                              payment.products?.reduce((sum, productId) => {
-                                  const product = data.products.find(
-                                      (p) => p._id === productId
-                                  )
-                                  if (product) {
-                                      return (
-                                          sum +
-                                          payment[
-                                              currencyType === 'USD'
-                                                  ? 'cash'
-                                                  : 'cashuzs'
-                                          ]
-                                      )
-                                  }
-                                  return sum
-                              }, 0)
-                          )
-                      },
-                      0
-                  )
+                    ]
+                    : (data?.saleconnector || data)?.payments?.reduce(
+                        (prev, payment) => {
+                            return (
+                                prev +
+                                payment.products?.reduce((sum, productId) => {
+                                    const product = data.products.find(
+                                        (p) => p._id === productId
+                                    )
+                                    if (product) {
+                                        return (
+                                            sum +
+                                            payment[
+                                            currencyType === 'USD'
+                                                ? 'cash'
+                                                : 'cashuzs'
+                                            ]
+                                        )
+                                    }
+                                    return sum
+                                }, 0)
+                            )
+                        },
+                        0
+                    )
         )
 
         setTotalTransfer(
             type === 'all'
                 ? (data?.saleconnector || data)?.payments?.reduce((prev, el) => {
-                      return (
-                          prev +
-                          el[
-                              currencyType === 'USD'
-                                  ? 'transfer'
-                                  : 'transferuzs'
-                          ]
-                      )
-                  }, 0)
+                    return (
+                        prev +
+                        el[
+                        currencyType === 'USD'
+                            ? 'transfer'
+                            : 'transferuzs'
+                        ]
+                    )
+                }, 0)
                 : type === 'debtPayed'
-                ? data[
+                    ? data[
                     currencyType === 'USD'
                         ? 'transfer'
                         : 'transferuzs'
-                ]
-                : (data?.saleconnector || data)?.payments?.reduce(
-                      (prev, payment) => {
-                          return (
-                              prev +
-                              payment.products?.reduce((sum, productId) => {
-                                  const product = data.products.find(
-                                      (p) => p._id === productId
-                                  )
-                                  if (product) {
-                                      return (
-                                          sum +
-                                          payment[
-                                              currencyType === 'USD'
-                                                  ? 'transfer'
-                                                  : 'transferuzs'
-                                          ]
-                                      )
-                                  }
-                                  return sum
-                              }, 0)
-                          )
-                      },
-                      0
-                  )
+                    ]
+                    : (data?.saleconnector || data)?.payments?.reduce(
+                        (prev, payment) => {
+                            return (
+                                prev +
+                                payment.products?.reduce((sum, productId) => {
+                                    const product = data.products.find(
+                                        (p) => p._id === productId
+                                    )
+                                    if (product) {
+                                        return (
+                                            sum +
+                                            payment[
+                                            currencyType === 'USD'
+                                                ? 'transfer'
+                                                : 'transferuzs'
+                                            ]
+                                        )
+                                    }
+                                    return sum
+                                }, 0)
+                            )
+                        },
+                        0
+                    )
         )
     }
 
+    function findProductById(products, productId) {
+        return products.find((p) => p._id === productId);
+    }
+
+    function generatePaymentItem(payment, productId, currencyType) {
+        let product = findProductById(data.products, productId)?._id;
+        if (productId === product) {
+            return (
+                <li className='border-b mt-3' key={`${payment._id}-${productId}`}>
+                    <span className='check-ul-li'>
+                       <span>{new Date(payment?.createdAt).toLocaleDateString()}</span>
+                        <span>
+                            {payment[currencyType === 'USD' ? 'payment' : 'paymentuzs'].toLocaleString('ru-RU')} {currencyType}
+                        </span>
+                    </span>
+                </li>
+            );
+        }
+        return null;
+    }
+ 
+    const paymentItems = (data?.saleconnector || data)?.payments?.flatMap(
+        (payment) => {
+            return payment.products.map((productId) => {
+                return generatePaymentItem(payment, productId, currencyType);
+            }).filter(item => item !== null); 
+        }
+    );
+    const parseToIntOrFloat = (value) => {
+        if (!value || value === 0)  return null
+        else if (value % 1 === 0) {
+            return parseInt(value)
+        } else {
+            return Number(parseFloat(value).toFixed(2));
+        }
+    }
     return (
         <div>
             {loadContent && (
@@ -228,22 +257,18 @@ const MiniSaleDebtPaymentCheck = ({data, type}) => {
                                 map(
                                     (data?.saleconnector || data)?.payments,
                                     (payment, index) => (
-                                        <li className='border-b' key={index}>
-                                            <p className='text-center mt-1 font-semibold'>
+                                        <li className='border-b mt-3' key={index}>
+                                            <span className='check-ul-li'>
+                                                <span> 
                                                 {new Date(
                                                     payment?.createdAt
-                                                ).toLocaleDateString()}
-                                            </p>
-                                            <span className='check-ul-li'>
-                                                <span> № {index + 1}</span>{' '}
+                                                ).toLocaleDateString()}</span>{' '}
                                                 <span>
-                                                    {payment[
+                                                    {parseToIntOrFloat(payment[
                                                         currencyType === 'USD'
                                                             ? 'payment'
                                                             : 'paymentuzs'
-                                                    ].toLocaleString(
-                                                        'ru-RU'
-                                                    )}{' '}
+                                                    ])}{' '}
                                                     {currencyType}
                                                 </span>
                                             </span>
@@ -252,79 +277,40 @@ const MiniSaleDebtPaymentCheck = ({data, type}) => {
                                 )
                             ) : type === 'debtPayed' ? (
                                 <li className='check-ul-li text-lg'>
-                                  <span className='font-semibold'>Umumiy: </span>
-                                  <span>  {
-                                        data[
-                                            currencyType === 'USD'
-                                                ? 'payment'
-                                                : 'paymentuzs'
-                                        ]
+                                    <span className='font-semibold'>Umumiy: </span>
+                                    <span>  {
+                                       parseToIntOrFloat( data[
+                                        currencyType === 'USD'
+                                            ? 'payment'
+                                            : 'paymentuzs'
+                                        ])
                                     } {currencyType}</span>
                                 </li>
                             ) : (
-                                (data?.saleconnector || data)?.payments.flatMap(
-                                    (payment, index) =>
-                                        payment.products.map((productId) => {
-                                            let product = data.products.find(
-                                                (p) => p._id === productId
-                                            )?._id
-
-                                            if (productId === product) {
-                                                return (
-                                                    <li
-                                                        className='border-b'
-                                                        key={index}
-                                                    >
-                                                        <p className='text-center mt-1 font-semibold'>
-                                                            {new Date(
-                                                                payment?.createdAt
-                                                            ).toLocaleDateString()}
-                                                        </p>
-                                                        <span className='check-ul-li'>
-                                                            <span>
-                                                                {' '}
-                                                                № {index + 1}
-                                                            </span>{' '}
-                                                            <span>
-                                                                {payment[
-                                                                    currencyType ===
-                                                                    'USD'
-                                                                        ? 'payment'
-                                                                        : 'paymentuzs'
-                                                                ].toLocaleString(
-                                                                    'ru-RU'
-                                                                )}{' '}
-                                                                {currencyType}
-                                                            </span>
-                                                        </span>
-                                                    </li>
-                                                )
-                                            }
-                                        })
-                                )
+                         paymentItems 
                             )}
                         </ul>
-                       
-                        <div className={`${type==="debtPayed"?'border-t':''} space-y-1 mt-1  pt-4`}>
+
+                        <div className={`${type === "debtPayed" ? 'border-t' : ''} space-y-1 mt-1  pt-4`}>
                             <div className='font-semibold flex justify-between items-center'>
                                 <span>Naqt:</span>
                                 <span>
-                                    {totalCash} {currencyType}
+                                    {parseToIntOrFloat(totalCash)} {currencyType}
                                 </span>
                             </div>
                             <div className='font-semibold flex justify-between items-center'>
                                 <span>Karta:</span>
                                 <span>
-                                    {totalCard} {currencyType}
+                                    {parseToIntOrFloat(totalCard)} {currencyType}
                                 </span>
                             </div>
                             <div className='font-semibold flex justify-between items-center pb-4'>
                                 <span>Plastik:</span>
                                 <span>
-                                    {totalTransfer} {currencyType}
+                                    {parseToIntOrFloat(totalTransfer)} {currencyType}
                                 </span>
                             </div>
-                            <div className='font-semibold flex justify-between items-center border-t pt-4'>
+                            {/* <div className='font-semibold flex justify-between items-center border-t pt-4'>
                                 <span>To'lov bo'lmagan savdolar:</span>
                                 <span>
                                     {0}
@@ -335,15 +321,14 @@ const MiniSaleDebtPaymentCheck = ({data, type}) => {
                                 <span>
                                     {0}
                                 </span>
-                            </div>
-                            
+                            </div> */}
                         </div>
                     </div>
                 </div>
             </div>
             <div className='w-full flex justify-end'>
                 <ReactToPrint
-                    trigger={() => <PrintBtn onClick={() => {}} />}
+                    trigger={() => <PrintBtn onClick={() => { }} />}
                     content={() => componentRef.current}
                 />
             </div>
