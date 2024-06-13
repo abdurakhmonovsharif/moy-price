@@ -1,0 +1,22 @@
+[
+  {
+    "type": "Director",
+    "label": "Director",
+    "value": "Direktor"
+  },
+  {
+    "type": "Worker",
+    "label": "Ishchi",
+    "value": "Ishchi"
+  },
+  {
+    "type": "DirectorFilial",
+    "label": "Filial rahbari",
+    "value": "Filial rahbari"
+  },
+  {
+    "type": "WorkerFilial",
+    "label": "Filial xodimi",
+    "value": "Filail xodimi"
+  }
+]

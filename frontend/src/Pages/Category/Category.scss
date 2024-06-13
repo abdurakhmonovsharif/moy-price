@@ -1,0 +1,23 @@
+@media (max-width:767px){
+    .supplier-style{
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        
+        input {
+            width: 100% !important;
+        }
+    }
+    .input-9{
+        width: 90% !important;
+    }
+    .input-category{
+        width: 29rem !important;
+    }
+    .search-form{
+        display: flex !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        background-color: red;
+    }
+}

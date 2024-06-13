@@ -1,0 +1,992 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url('http://db.onlinewebfonts.com/c/7f84c82115f70a63b5307518164b53dc?family=A2+CWM+WEB+3');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --clock-color: #a9c0ef;
+    --clock-width: 3rem;
+    --clock-radius: calc(var(--clock-width) / 2);
+    --clock-minute-length: calc(var(--clock-width) * 0.4);
+    --clock-hour-length: calc(var(--clock-width) * 0.2);
+    --clock-thickness: 0.1rem;
+}
+
+::-webkit-scrollbar {
+    height: 0px;
+}
+
+@layer base {
+    .exportButton {
+        @apply rounded-[8px] transition-all ease-in-out duration-200 overflow-hidden bg-success-500 hover:bg-success-600 active:shadow-none active:bg-success-700 pl-[8px] flex items-center justify-between shadow-[0_10px_10px_rgba(0,0,0,0.05)] leading-[1.875rem] text-white-900 text-[0.875rem] gap-[8px];
+    }
+
+    .importButton {
+        @apply rounded-[8px] cursor-pointer transition-all ease-in-out duration-200 overflow-hidden bg-primary-800 hover:bg-primary-900 active:shadow-none pl-[8px] flex items-center justify-between shadow-[0_10px_10px_rgba(0,0,0,0.05)] leading-[1.875rem] text-white-900 text-[0.875rem] gap-[8px];
+    }
+
+    .tableInput {
+        @apply w-full placeholder-blue-200 pt-[0.3125rem] pb-[0.3125rem] pr-[.625rem] pl-[0.625rem] rounded-[0.25rem] border-[1px] border-blue-100 outline-transparent outline outline-0 focus:outline-blue-100 focus:outline-4 font-roboto text-sm text-right transition-all ease-in-out duration-200;
+    }
+
+    .iconClass {
+        @apply w-[1.125rem] h-[1.125rem];
+    }
+
+    .searchInput {
+        @apply w-full pt-[0.625rem] pb-[0.625rem] pl-[2rem] rounded-[0.25rem] border-2 border-blue-200 outline-0 font-roboto text-sm;
+    }
+
+    .createElement {
+        @apply p-[0.625rem] bg-success-500 text-white-900 text-[0.875rem] rounded-[0.5rem]  flex items-center gap-[0.3125rem] leading-[1.125rem] justify-center items-center w-full hover:bg-success-600 shadow-[0_5px_15px_rgba(0,0,0,0.15)] active:bg-success-700 active:shadow-none transition-all ease-in-out duration-200;
+    }
+
+    .plusIcon {
+        @apply text-white-900 text-[1.125rem] shadow-[0_rem_0.3125rem_0.9375rem_rgba(0,0,0,0.15)];
+    }
+
+    .edit-button {
+        @apply p-[0.625rem] bg-warning-500 text-white-900 text-[0.875rem] rounded-[0.3125rem]   gap-[0.3125rem] leading-[1.125rem] justify-center items-center w-full hover:bg-warning-600 shadow-[0_5px_15px_rgba(0,0,0,0.15)] active:bg-success-700 active:shadow-none transition-all ease-in-out duration-200;
+    }
+
+    .clearElement {
+        @apply p-[0.625rem] bg-error-500 text-white-900 text-[0.875rem] rounded-[0.5rem]  flex items-center gap-[0.3125rem] leading-[1.125rem] justify-center  w-1/2 hover:bg-error-600 shadow-[0_5px_15px_rgba(0,0,0,0.15)] active:bg-error-700 active:shadow-none transition-all ease-in-out duration-200;
+    }
+
+    .headerStyle {
+        @apply flex items-center justify-center text-[1.2rem] font-bold p-[.625rem] leading-["120%"];
+    }
+
+    .paragrafCard {
+        @apply text-white-700 mr-[1.25rem];
+    }
+
+    .paragrafCardBtn {
+        @apply text-white-700 mr-[3.1rem];
+    }
+
+    .td {
+        @apply px-2 border-r-2 border-b-2 border-primary-700 text-sm font-normal text-[#000];
+    }
+
+    .th {
+        @apply font-bold text-sm text-white-900 py-2 px-2;
+    }
+
+    .tr {
+        @apply border-transparent bg-white-900 hover:bg-trHover hover:shadow-[-8px_0_0] hover:shadow-primary-700 transition-shadow duration-200;
+    }
+
+    .inputClass {
+        @apply w-full py-[0.625rem] px-[0.58rem]  rounded-[0.25rem] border-[1px] border-blue-200 text-sm placeholder-blue-200 outline-transparent outline outline-0 focus:outline-blue-100 hover:bg-inputHover focus:outline-4 focus:bg-white-900 transition-all ease-in-out duration-100;
+    }
+
+    .search-input {
+        @apply leading-[1.125rem] placeholder-blue-200 transition-all ease-in-out duration-100 px-[8px] py-[0.625rem] w-full bg-transparent outline-none;
+    }
+
+    .disabled-class {
+        @apply rounded-[0.25rem]  border-0 text-black-200 placeholder-black-200 outline-transparent outline outline-0 bg-black-200 hover:bg-black-200 focus-within:outline-0 focus-within:bg-black-200 focus-within:hover:bg-black-200 transition-all ease-in-out duration-100 shadow-[0_10px_10px_rgba(0,0,0,0.05)] flex items-center;
+    }
+
+    .selectInput {
+        @apply placeholder-blue-200 outline-transparent outline outline-0 focus:outline-blue-100 bg-white-900 hover:bg-inputHover focus:outline-4 focus:bg-white-900 transition-all ease-in-out duration-100;
+    }
+
+    .selectInputClass {
+        @apply w-full bg-transparent min-w-full max-w-full rounded-[0.25rem] text-sm placeholder-blue-200 focus:outline-none leading-[1.125rem];
+    }
+
+    .searchInput-container {
+        @apply relative px-[0.625rem] rounded-[0.25rem] border-[1px] border-blue-200 text-sm placeholder-blue-200 outline-transparent outline outline-0 focus-within:outline-blue-100 bg-white-900 hover:bg-inputHover focus-within:outline-4 focus-within:bg-white-900 focus-within:hover:bg-white-900 transition-all ease-in-out duration-100 shadow-[0_10px_10px_rgba(0,0,0,0.05)] flex items-center;
+    }
+
+    .labelClass {
+        @apply block mb-[10px] text-blue-700;
+    }
+
+    .iconButton {
+        @apply absolute right-[10px] top-1/2 -translate-y-1/2 text-blue-700 hover:text-black-700 transition ease-in duration-100;
+    }
+
+    /* this is checkout style */
+    .cardContainer {
+        @apply pl-[1.875rem] pr-[1.875rem] pt-[2.3rem] pb-[2.3rem] w-full inline-block rounded-[.5rem] shadow-[0px_15px_15px_rgba(0,0,0,0.05)] transition ease-in-out;
+    }
+
+    .tradeCard {
+        @apply bg-success-500 hover:bg-success-600 w-full;
+    }
+
+    .debts {
+        @apply bg-error-500 hover:bg-error-600;
+    }
+
+    .returnedCard {
+        @apply bg-primary-800 hover:bg-primary-900;
+    }
+
+    .discountCard {
+        @apply bg-warning-500 hover:bg-warning-600;
+    }
+
+    .tradeIn {
+        @apply flex items-center w-full gap-[1.875rem] justify-between;
+    }
+
+    .parcentageWidth {
+        @apply w-full w-[3.75rem] h-[3.75rem];
+    }
+
+    .percentageCircle {
+        @apply w-[3.75rem] h-[3.75rem] bg-white-900 rounded-full flex justify-center items-center text-[1.25rem] leading-[1.875rem] text-black-700 border-[.125rem] border-solid border-black-200;
+    }
+
+    .checkoutName {
+        @apply w-full text-white-800 flex justify-between pb-[1.25rem] border-b border-solid border-white-200 font-normal;
+    }
+
+    .checkName {
+        @apply w-[100%] w-full text-white-800 flex justify-between pb-[1.25rem] border-b border-solid border-white-200 font-normal;
+    }
+
+    .costCard {
+        @apply text-[2rem] w-full leading-[1.875rem] mt-[1.25rem] text-white-900 w-full text-right inline-block;
+    }
+
+    .activeCard {
+        @apply bg-black-700 hover:bg-black-700 shadow-[0px_25px_25px_rgba(0,0,0,0.25)];
+    }
+
+    .filial-btn {
+        @apply flex gap-[.625rem] justify-end pr-[1.25rem] items-center py-[0.65625rem];
+    }
+
+    /* Shops Card styled start */
+    .shops_card {
+        @apply flex w-[100%] shadow-[0px_10px_10px_rgba(0,0,0,0.05)] rounded-[.25rem] bg-white-300 justify-between hover:bg-white-900 transition ease-in duration-100 hover:cursor-pointer;
+    }
+
+    .product-cost {
+        @apply flex grow justify-between;
+    }
+
+    .product {
+        @apply text-[1rem] font-normal leading-[1.175rem] text-black-700 mb-[.625rem] flex justify-center items-center;
+    }
+
+    .product-number {
+        @apply text-[1.25rem] font-normal leading-[1.465rem] flex justify-center items-center;
+    }
+
+    .product-total {
+        @apply font-normal text-[1.25rem] leading-[1.465rem] text-success-500 flex justify-center items-center;
+    }
+
+    .shop-title {
+        @apply text-[1rem] font-medium leading-[1.17rem] text-white-900 w-full py-[1.125rem] px-[1.25rem] flex justify-center items-center shops-bg-color rounded-bl-[3.125rem];
+    }
+
+    .active_shop {
+        @apply bg-white-900;
+    }
+
+    .searchIcon {
+        @apply bottom-[0.6rem] w-[1.125rem] h-[1.125rem] text-blue-200;
+    }
+
+    .paragraf {
+        @apply text-[0.875rem] flex items-center text-blue-700 leading-[1rem];
+    }
+
+    .cardStyle {
+        @apply p-[1.15rem] bg-primary-800 text-white-900 inline-block rounded-[.5rem] transition ease-in-out hover:bg-black-700;
+    }
+
+    .numberCard {
+        @apply flex justify-between font-normal mt-[.3125rem];
+    }
+
+    .cardSpan {
+        @apply text-[1.25rem] ml-[.625rem];
+    }
+
+    /* this is Product Report style start */
+    .filter {
+        @apply flex  items-center justify-between gap-[1.185rem];
+    }
+
+    .filter_block {
+        @apply flex flex-row  items-end justify-between;
+    }
+
+    /* this is Product Report style end */
+    .pagination {
+        @apply flex flex-row justify-between items-center gap-[2.875rem];
+    }
+
+    .table_style {
+        @apply flex flex-col items-start;
+    }
+
+    /* this is Product Report style end */
+    /* this is Supplier Pages style start */
+    .new-product {
+        @apply w-full flex flex-col justify-center items-start pt-[1.25rem] pb-[1.25rem];
+    }
+
+    .supplier-style {
+        @apply w-full flex flex-row justify-center items-end  gap-[1.25rem];
+    }
+
+    .pagination-supplier {
+        @apply flex flex-row justify-between items-center gap-[2.875rem];
+    }
+
+    .supplier-title {
+        @apply font-normal text-[1.25rem] leading-[1.875rem] text-blue-900;
+    }
+
+    /* this is Supplier Pages style start */
+    ::-webkit-scrollbar {
+        width: 2px;
+        @apply bg-black-100;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border-radius: 50px;
+        @apply bg-black-200;
+    }
+
+    /* SaleBtns Style start */
+    .paymentsstyle {
+        @apply inline-block mr-[0.625rem];
+    }
+
+    .salestyle {
+        @apply w-full flex-[42%] px-[10px] py-[10px] text-[#5A5B5B] rounded-[0.5rem] outline-none w-full hover:bg-primary-700 hover:text-white-900 shadow-[0_15px_6px_rgba(0,0,0,0.01),0_9px_5px_rgba(0,0,0,0.03),0_4px_4px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.05),0_0_0_rgba(0,0,0,0.05)] active:scale-95 active:shadow-none transition-all ease-in-out duration-200;
+    }
+
+    .discountstyle {
+        @apply bg-warning-500 hover:bg-warning-600 transition-all active:scale-95 py-[10px] text-white-900 rounded-[0.5rem] outline-none shadow-[0_15px_6px_rgba(0,0,0,0.01),0_9px_5px_rgba(0,0,0,0.03),0_4px_4px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.05),0_0_0_rgba(0,0,0,0.05)];
+    }
+
+    .discstyle {
+        @apply inline-block mr-[0.625rem];
+    }
+
+    .paymentstyle {
+        @apply bg-success-500 hover:bg-success-600 transition-all active:scale-95 py-[1.375rem] text-white-900 rounded-[0.5rem] outline-none duration-200 shadow-[0_15px_6px_rgba(0,0,0,0.01),0_9px_5px_rgba(0,0,0,0.03),0_4px_4px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.05),0_0_0_rgba(0,0,0,0.05)];
+    }
+
+    .paystyle {
+        @apply inline-block mr-1;
+    }
+
+    .payclipstyle {
+        @apply bg-[#9E9E9E] shadow-lg px-[22px] py-[15px] text-white-900 rounded-lg mx-1 outline-none duration-200;
+    }
+
+    /* SaleBtns Style end */
+    .mainPadding {
+        @apply pl-[2.5rem] pr-[1.25rem] py-[1.25rem];
+    }
+
+    .tableContainerPadding {
+        @apply pl-[2.5rem] pr-[1.25rem] pb-[1.25rem] overflow-y-auto max-h-[35rem] mb-[1rem];
+    }
+
+    .tablePadding {
+        @apply pl-[2.5rem] pr-[1.25rem] pb-[1.25rem] max-h-[28rem] mb-[1rem];
+    }
+
+    .stickyForm {
+        @apply sticky z-10 top-0 bg-background shadow-[0_5px_25px_rgba(0,0,0,0.5)] rounded-l-[8px];
+    }
+
+    .linkstyles {
+        @apply bg-inputHover transition-all duration-200 w-[180px] py-[0.3125rem] rounded-full flex items-center justify-center gap-[0.625rem];
+    }
+
+    .activelink {
+        @apply bg-white-900 shadow-[0px_10px_10px_rgba(0,0,0,0.05)];
+    }
+
+    .modalUniversal {
+        @apply z-50;
+    }
+
+    .approveBtn {
+        @apply p-[0.7rem_3rem] rounded-[0.5rem] text-white-900 text-sm transition-all ease-in duration-75;
+    }
+
+    /* DiscountInput and ExitBtn style start */
+    .discountinput {
+        @apply px-[10px] py-[5px] rounded-l outline-none border-y border-l border-blue-100 focus:border focus:border-warning-500 placeholder:text-blue-200 placeholder:text-[0.875rem] placeholder:text-right text-right;
+    }
+
+    .exitbtn {
+        @apply bg-error-400 py-[4px] px-[5px] text-white-900 rounded-[4px] hover:bg-error-500 active:scale-95 duration-200;
+    }
+
+    /* DiscountInput and ExitBtn style end */
+    .shopButton {
+        @apply w-[2.125rem] h-[2.125rem] rounded-full flex items-center justify-center shadow-[0px_5px_10px_rgba(0,0,0,0.1)] hover:bg-black-700 duration-200 p-[5px];
+    }
+
+    .filial-active {
+        @apply bg-black-700;
+    }
+
+    .shopIcons {
+        @apply text-[1.5rem] text-white-900;
+    }
+
+    .datePickerStyle {
+        @apply text-[0.875rem] w-full leading-[1.125rem]  border border-blue-200 h-[2.375rem] rounded-md p-[0.625rem] bg-white-900 outline-0;
+    }
+
+    .datePickerStyle::placeholder {
+        @apply text-blue-200 leading-[1.125rem] text-[0.875rem];
+    }
+
+    .datePickerIcon {
+        @apply absolute top-[50%] translate-y-[-50%] right-[0.625rem] text-blue-200 pointer-events-none transition-all ease-in-out duration-200;
+    }
+
+    .inverterizationHead {
+        @apply flex justify-between items-center;
+    }
+
+    .inverterizationText {
+        @apply font-[400] text-[1.25rem] text-blue-900;
+    }
+
+    .inverterizationBody {
+        @apply flex items-center gap-9;
+    }
+
+    .inverterizationCodeText {
+        @apply text-[0.875rem] text-blue-700 pr-[0.75rem] font-[300];
+    }
+
+    .productIncoHead {
+        @apply sm:flex block gap-[1rem] items-center;
+    }
+
+    .productDates {
+        @apply lg:w-1/4 md:w-[2/5] duration-200 mb-3 sm:mb-0;
+    }
+
+    .productSelectInput {
+        @apply border border-black-300 p-[0.8rem] lg:w-3/4 md:w-3/5 duration-200;
+    }
+
+    .productTypeBlock {
+        @apply sm:flex block justify-end;
+    }
+
+    .productType {
+        @apply mr-[1.25rem] text-blue-700 text-[0.875rem] duration-200 font-[300] sm:mb-0;
+    }
+
+    .productSumAll {
+        @apply text-blue-700 text-[0.875rem] font-[300] duration-200;
+    }
+
+    .productCard {
+        @apply flex gap-4 xl:gap-10 lg:gap-4 md:gap-2 sm:gap-8 md:justify-start justify-center duration-200 flex-wrap;
+    }
+
+    .print-btn-style {
+        @apply flex overflow-hidden transition-all ease-in-out duration-100 hover:bg-primary-900 rounded-[0.5rem] items-stretch shadow-[0px_10px_10px_rgba(0,0,0,0.05)] active:shadow-none;
+    }
+
+    .print-text-style {
+        @apply py-[0.125rem] px-[0.5rem] leading-[1.875rem] transition-all ease-in-out duration-200 bg-primary-800 group-hover:bg-primary-900 text-white-900 text-sm;
+    }
+
+    .print-icon-style {
+        @apply bg-white-900 flex items-center justify-center p-[0.5rem];
+    }
+
+    .inventoriesHead {
+        @apply flex justify-between items-center;
+    }
+
+    .linktoback {
+        @apply w-[2.125rem] h-[2.125rem] border border-blue-500 text-blue-500 inline-block hover:bg-blue-500 hover:text-white-900 flex items-center justify-center rounded-lg;
+    }
+
+    .unitFormStyle {
+        @apply flex gap-[1.25rem] mainPadding bg-background transition ease-linear duration-200 w-full;
+    }
+
+    .currency {
+        @apply absolute z-50 w-[6.312rem] h-[1.5rem] bg-primary-800 rounded-lg border border-primary-800 -right-14 hover:right-0 top-2 overflow-hidden drop-shadow-sm transition-all;
+    }
+
+    .currency-btn-selected {
+        @apply w-1/2 text-center bg-primary-800 h-full text-white-900 text-base;
+    }
+
+    .currency-btn-unselected {
+        @apply w-1/2 text-center bg-white-900 h-full text-primary-800 text-base;
+    }
+
+    .sale-deliver-form {
+        @apply flex gap-[1.25rem] mainPadding bg-background transition ease-linear duration-200 w-full;
+    }
+
+    .exchangerate-style {
+        @apply flex items-end gap-[1.25rem];
+    }
+
+    .customerPay-head-style {
+        @apply p-[1.25rem] bg-white-800 backdrop-blur-[3.125rem] rounded-[0.25rem] flex items-center flex-col w-[20.25rem] flex flex-col justify-between;
+    }
+
+    .customer-head-icon {
+        @apply flex justify-between items-center w-full py-[0.5rem] mb-[1.25rem];
+    }
+
+    .custom-payment-ul-li {
+        @apply flex justify-between items-center mb-[1rem];
+    }
+
+    .custom-payment-text-style {
+        @apply text-black-700 text-[0.875rem];
+    }
+
+    .custom-paymet-btn {
+        @apply flex flex-wrap w-full gap-[1.25rem_0.625rem];
+    }
+
+    /* This is Reports Pages styled start */
+    .checkout-card {
+        @apply flex justify-center items-center text-center gap-[1.6rem] w-full grid sm:grid-cols-1 xl:grid-cols-3 md:grid-cols-2;
+    }
+
+    .check-ul-li {
+        @apply flex justify-between items-center py-1 text-[0.875rem] font-bold;
+    }
+
+    .check-ul-li-span {
+        @apply text-[0.875rem] text-black-900;
+    }
+
+    .check-text-style {
+        @apply text-[1.5rem] font-bold;
+    }
+
+    .check-ul-li-foot {
+        @apply text-[0.875rem] text-black-700 font-bold flex justify-between py-[0.675rem] border-t-[0.8px] border-black-700;
+    }
+
+    .check-table-rtr {
+        @apply border text-center text-[0.875rem] font-bold p-1;
+    }
+
+    .check-table-body {
+        @apply p-1 border text-end text-[0.875rem] font-bold;
+    }
+
+    /* This is Reports Pages styled end */
+    .checkbox {
+        @apply flex items-center justify-center;
+    }
+
+    .checkbox label {
+        @apply transition-all duration-100 block w-[1.1rem] h-[1.1rem] rounded-[0.25rem] bg-white-900 border border-black-200 cursor-pointer relative;
+    }
+
+    .checkbox label .checkbox-icon {
+        @apply transition-all ease-linear duration-100 opacity-0 text-blue-500;
+    }
+
+    .checkbox input:not(:checked) ~ label:hover {
+        @apply bg-blue-100;
+    }
+
+    .checkbox input:not(:checked) ~ label:hover .checkbox-icon {
+        @apply opacity-50;
+    }
+
+    .checkbox input:checked ~ label {
+        @apply bg-blue-400;
+    }
+
+    .checkbox input:checked ~ .checkbox-label {
+        @apply text-black-700;
+    }
+
+    .checkbox input:checked ~ label .checkbox-icon {
+        @apply opacity-100 text-white-900;
+    }
+
+    .checkbox .checkbox-label {
+        @apply transition-all duration-100 grow text-base text-black-200 leading-[1.125rem] ml-[0.625rem];
+    }
+
+    .register-selling-right {
+        @apply w-[20.25rem] p-[1.25rem];
+    }
+
+    .register-selling-right-accept-btn {
+        @apply grow bg-success-500 text-center py-[0.875rem] hover:bg-success-600 transition-all duration-100 rounded-[0.5rem] text-white-900 text-sm leading-[1rem] flex justify-center items-center;
+    }
+
+    .register-selling-right-deny-btn {
+        @apply bg-warning-500 text-center py-[0.625rem] px-[0.9375rem] hover:bg-warning-600 transition-all duration-100 rounded-[0.5rem] text-white-900 text-sm leading-[1rem];
+    }
+
+    .category-card {
+        @apply flex flex-col gap-[0.625rem] p-[0.625rem] mb-[1.25rem] cursor-pointer rounded-[0.25rem] transition-all duration-200 bg-[#EFF4F2] border-t-2 border-[#EAEAEA] relative overflow-hidden;
+    }
+
+    .category-card:not(.active-category):hover {
+        @apply bg-black-100 border-[#D4D4D4];
+    }
+
+    .category-card:hover ~ .category-card-checkmark {
+        @apply bg-[#D4D4D4];
+    }
+
+    .active-category {
+        @apply bg-white-900 border-[#A9C0EF] shadow-[0_10px_10px_rgba(0,0,0,0.05)];
+    }
+
+    .footer-text {
+        @apply font-light text-black-700 text-xs;
+    }
+
+    .category-card-checkmark {
+        @apply bg-[#EAEAEA] rounded-full absolute -top-[1.9375rem] -right-[1.9375rem] w-[4.25rem] h-[4.25rem] transition-all duration-200 text-[#9E9E9E];
+    }
+
+    .active-category .category-card-checkmark {
+        @apply bg-[#A9C0EF] text-white-900;
+    }
+
+    .category-card-checkmark .check-icon {
+        @apply absolute left-[0.875rem] bottom-[0.875rem];
+    }
+
+    .check-inventory-head {
+        @apply flex justify-between items-center border-b-[0.8px] border-black-700 mb-3 pb-1;
+    }
+
+    .check-saved-head {
+        @apply flex justify-between items-center border-b-[0.8px] border-black-700 mb-4;
+    }
+
+    /* Admin product Cards styly start */
+    .admin-card {
+        @apply flex-[0_0_31.3814%] bg-blue-100 rounded-[.5rem] shadow-[0px_10px_10px_rgba(0,0,0,0.05)] hover:bg-blue-200 transition-all ease-in-out duration-200;
+    }
+
+    .admin-card-header {
+        @apply flex flex-col justify-center items-center pt-[1.25rem] pb-[1.25rem] pl-[6.25rem] pr-[6.25rem] w-full gap-[.625rem];
+    }
+
+    .admin-header-paragraf {
+        @apply mt-[-12px] font-bold text-[.875rem] leading-[1rem] text-[#fff];
+    }
+
+    .admin-users {
+        @apply flex flex-row justify-center items-center pt-[1.25rem] pb-[1.25rem] pl-[.625rem] pr-[.625rem] gap-[1.25rem] bg-black-500;
+    }
+
+    .admin-users-data {
+        @apply flex flex-row items-center gap-[.625rem];
+    }
+
+    .admin-users-name {
+        @apply font-normal text-[.875rem] leading-[1.1rem] text-[#fff];
+    }
+
+    .admin-users-checkbox {
+        @apply flex flex-row justify-center items-center  pt-[1.25rem] pb-[1.25rem] pr-[.625rem] pl-[.625rem] gap-[1.25rem];
+    }
+
+    .checkbox-card {
+        @apply flex items-center gap-[.625rem];
+    }
+
+    .checkbox-card-paragraf {
+        @apply font-medium text-[.75rem] leading-[12px] text-[#fff];
+    }
+
+    .toggleText {
+        @apply text-sm leading-[12px] text-black-700;
+    }
+
+    /* Admin product Cards styly end */
+    /* admin Report style start */
+    .admin-report-label {
+        @apply mainPadding flex justify-between w-full text-[1.2rem];
+    }
+
+    .report-card {
+        @apply pt-[1.6rem] pb-[1.6rem] border-[2px] border-[rgb(0_180_204)] flex justify-around items-center;
+    }
+
+    .cards-number {
+        @apply flex flex-col justify-center items-center leading-[1.6rem];
+    }
+
+    .number-paragraf {
+        @apply font-bold;
+    }
+
+    .tr-row {
+        @apply p-[.8rem];
+    }
+
+    .tr-div {
+        @apply border-[2px] border-[rgb(0_180_204)] text-lg;
+    }
+
+    .td-page {
+        @apply border-r-[2px] border-r-[rgb(0_180_204)] tr-row  font-bold pl-[1.5rem];
+    }
+
+    .td-page-two {
+        @apply text-right pr-[.8rem];
+    }
+
+    /* admin Report style start */
+    /* Loader style start */
+    .loader {
+        @apply w-full h-full flex justify-center items-center absolute z-[10000] top-[0] left-[0] backdrop-blur-[10px];
+    }
+
+    .animation {
+        @apply flex items-center justify-between gap-[15px];
+    }
+
+    .animation-img {
+        @apply relative h-[4.875rem] w-[4.875rem] items-center;
+    }
+
+    .animation-bg {
+        @apply absolute w-[68.82px] h-[68.83px] rounded-[17px] bg-[rgba(35,187,134,0.47)] rotate-[8.84deg];
+    }
+
+    .animation-block {
+        @apply absolute w-[4rem] h-[4rem] left-[3px] top-[2px] p-[15px] bg-[#23BB86] rounded-[15px] flex justify-center items-center;
+    }
+
+    .animation-icon {
+        @apply w-[2.125rem] h-[2.25rem] p-[9px] bg-[#ffffff] rounded-[12px] flex justify-center items-center;
+    }
+
+    .animation-text {
+        @apply flex justify-center items-center font-semibold text-[1.5rem] leading-[1.125rem] text-[#23BB86];
+    }
+
+    .animation-name {
+        @apply pr-[8px] border-r-[2.5px];
+    }
+
+    /* Loader style end */
+    /* product exchanges style */
+    .product-exchanges-card {
+        @apply relative border-2 rounded-lg h-auto p-[1.25rem] shadow-[0px_10px_10px_rgba(0,0,0,0.05)];
+    }
+
+    .product-exchanges-card-top-icons {
+        @apply absolute top-[0.6875rem] right-[-1.1rem] w-[2.125rem] h-[2.125rem] rounded-full border z-20 flex justify-center items-center shadow-[0px_10px_10px_rgba(0,0,0,0.05)] active:shadow-none cursor-pointer;
+    }
+
+    .product-exchanges-card-center-icons {
+        @apply absolute top-[36%] left-[-1.15rem] w-[2.125rem] h-[2.125rem] rounded-full bg-[#F79009] border border-[#F79009] z-20 flex justify-center items-center shadow-[0px_10px_10px_rgba(0,0,0,0.05)] active:shadow-none cursor-pointer;
+    }
+
+    .product-exchanges-card-text {
+        @apply text-black-700 font-[400] text-[0.875rem] leading-[1rem] mb-[1.25rem];
+    }
+
+    .product-exchanges-card-body {
+        @apply flex items-start gap-[1.875rem] text-[0.75rem] font-[300] text-black-700;
+    }
+
+    .product-exchanges-card-body-text {
+        @apply flex justify-between leading-[0.875rem];
+    }
+
+    .product-exchanges-span {
+        @apply text-[0.75rem] py-[0.125rem] px-[0.675rem] rounded-[3.125rem] text-white-900;
+    }
+
+    .product-exchange-modal-span {
+        @apply py-[0.125rem] px-[0.625rem] rounded-[3.125rem] text-white-900 text-[1rem] font-[400] leading-[1rem];
+    }
+
+    .product-exchange-modal-text {
+        @apply text-[1rem] font-[300] text-black-700 w-full flex items-center justify-center gap-4;
+    }
+
+    .request-application-ul {
+        @apply flex justify-between border-b border-b-primary-900 pb-[0.5rem] mb-[1rem] items-center;
+    }
+
+    .request-application-ul-li {
+        @apply text-[0.75rem] text-black-700 pb-[8px];
+    }
+
+    .request-application-li-p {
+        @apply text-[1rem] text-black-900 flex items-center gap-[5px];
+    }
+
+    .request-application-delete-icon {
+        @apply w-[22px] h-[22px] rounded-full bg-error-700 flex justify-center items-center text-white-900 hover:bg-error-800 duration-200 cursor-pointer;
+    }
+
+    .request-application-cancel-icon {
+        @apply text-success-700 hover:text-success-800 duration-200;
+    }
+
+    /* product exchanges style */
+}
+
+html,
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 16px;
+}
+
+.loginPage {
+    height: 100vh;
+    background: radial-gradient(
+            100% 316.36% at 0% 50%,
+            #0090a3 0%,
+            rgba(36, 86, 50, 0.9) 100%
+    );
+}
+
+.loginCircle {
+    width: calc(100vw / 2.430604982206406);
+    height: calc(100vw / 2.430604982206406);
+}
+
+.bg-circle-2 {
+    width: calc(100vw / 2.732);
+    height: calc(100vw / 2.732);
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    border-top-color: white;
+    width: 16px;
+    height: 16px;
+    animation: rotate-spinner 1s linear infinite;
+}
+
+.time-line {
+    width: 100%;
+    position: relative;
+}
+
+.time-line::before,
+.time-line::after {
+    content: '';
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: white;
+    top: -5.5px;
+}
+
+.time-line::before {
+    left: -11px;
+}
+
+.time-line::after {
+    right: -11px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* SaleBtns Style end */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+.clock-loader {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--clock-width);
+    height: var(--clock-width);
+    border: 2px solid var(--clock-color);
+    border-radius: 50%;
+}
+
+.clock-loader::before,
+.clock-loader::after {
+    position: absolute;
+    content: '';
+    top: calc(var(--clock-radius) * 0.25);
+    width: var(--clock-thickness);
+    background: var(--clock-color);
+    border-radius: 10px;
+    transform-origin: center calc(100% - calc(var(--clock-thickness) / 2));
+    animation: spin infinite linear;
+}
+
+.clock-loader::before {
+    height: var(--clock-minute-length);
+    animation-duration: 2s;
+}
+
+.clock-loader::after {
+    top: calc(var(--clock-radius) * 0.25 + var(--clock-hour-length));
+    height: var(--clock-hour-length);
+    animation-duration: 15s;
+}
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+    z-index: 50;
+    overflow: auto;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(5px) !important;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
+}
+
+.ReactModal__Content {
+    width: 50%;
+    inset: auto !important;
+    border-radius: 8px !important;
+    background-color: #eff4f2 !important;
+    left: 50% !important;
+    top: 50% !important;
+    padding: 3rem !important;
+    transform: translate(-50%, -50%) !important;
+    filter: none;
+}
+
+.modalIcon path {
+    stroke-width: 12;
+}
+
+.reciept {
+    font-family: 'Fake Receipt', sans-serif;
+}
+
+@media (max-width: 767px) {
+    .ReactModal__Content {
+        width: 90%;
+        inset: auto !important;
+        border-radius: 8px !important;
+        background-color: #eff4f2 !important;
+        left: 50% !important;
+        top: 50% !important;
+        padding: 3rem !important;
+        transform: translate(-50%, -50%) !important;
+        filter: none;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.shops-bg-color {
+    background: linear-gradient(234.85deg, #00b4cc 0%, #0090a3 100%);
+}
+
+.avatar-border {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='%230090A3FF' stroke-width='2' stroke-dasharray='5' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+}
+
+.excel-loader {
+    border-top-color: #3498db;
+    -webkit-animation: spinner 1s linear infinite;
+    animation: spinner 1.5s linear infinite;
+}
+
+input[type='checkbox'] {
+    position: relative;
+    width: 34px;
+    height: 14px;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    background: rgba(60, 60, 67, 0.3);
+    outline: none;
+    transition: 0.3s;
+}
+
+input[type='checkbox']:checked {
+    background: #ffffff50;
+    mix-blend-mode: normal;
+}
+
+input[type='checkbox']::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    top: -3px;
+    left: 0;
+    transform: scale(1.1);
+    box-shadow: 0 0.1px 0.3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    background: #ffffff;
+    z-index: 10;
+}
+
+input[type='checkbox']:checked::before {
+    left: 20px;
+}
+
+/* sale toggle*/
+
+.sale-toggle-container input[type='checkbox']:checked {
+    background: #86a7e9;
+}
+
+.sale-toggle-container input[type='checkbox']:checked::before {
+    left: 20px;
+    background: #4175dc;
+}

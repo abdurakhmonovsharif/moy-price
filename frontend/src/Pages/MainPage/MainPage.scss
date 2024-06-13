@@ -1,0 +1,17 @@
+@media (max-width:767px) {
+    .circle-mobile{
+        width: 100vw;
+        overflow: scroll;
+        margin-top: 20px;
+        background: transparent;
+        gap: 20px;
+        padding-top: 40px;
+        padding-bottom: 70px;
+
+        
+    }
+    ::-webkit-scrollbar {
+        height: 0px;
+      }
+    
+}

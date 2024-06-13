@@ -1,0 +1,8 @@
+{
+  "tabWidth": 4,
+  "semi": false,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "proseWrap": "always",
+  "bracketSpacing": false
+}
